@@ -1,0 +1,12 @@
+[
+  {
+    "payload": {
+      "search_phrase": "robotics",
+      "topic": "Technology",
+      "months": 3
+    },
+    "files": {
+      "orders.xlsx": "orders.xlsx"
+    }
+  }
+]

@@ -1,0 +1,295 @@
+2024-06-26 17:20:36.352 | INFO     | src.rpa_news_scraper:open_site:29 - Opening site https://www.latimes.com/
+2024-06-26 17:25:29.602 | ERROR    | src.rpa_news_scraper:_finish_process:88 - Failed to open site: 
+
+Traceback (most recent call last):
+  File "/Users/jones/PersonalProjects/TA-challenge/TA24/freshNews2/src/rpa_news_scraper.py", line 31, in open_site
+    self.browser.open_available_browser(self.base_url)
+  File "/Users/Shared/robocorp/ht/eaec1df_b1f3c24_6133770e/lib/python3.10/site-packages/RPA/Browser/common.py", line 36, in wrapper
+    return super_func(*args, headless=headless, **kwargs)
+  File "/Users/Shared/robocorp/ht/eaec1df_b1f3c24_6133770e/lib/python3.10/site-packages/RPA/Browser/Selenium.py", line 592, in open_available_browser
+    self.go_to(url)
+  File "/Users/Shared/robocorp/ht/eaec1df_b1f3c24_6133770e/lib/python3.10/site-packages/RPA/Browser/Selenium.py", line 130, in go_to
+    super().go_to(url)
+  File "/Users/Shared/robocorp/ht/eaec1df_b1f3c24_6133770e/lib/python3.10/site-packages/SeleniumLibrary/keywords/browsermanagement.py", line 521, in go_to
+    self.driver.get(url)
+  File "/Users/Shared/robocorp/ht/eaec1df_b1f3c24_6133770e/lib/python3.10/site-packages/selenium/webdriver/remote/webdriver.py", line 356, in get
+    self.execute(Command.GET, {"url": url})
+  File "/Users/Shared/robocorp/ht/eaec1df_b1f3c24_6133770e/lib/python3.10/site-packages/selenium/webdriver/remote/webdriver.py", line 347, in execute
+    self.error_handler.check_response(response)
+  File "/Users/Shared/robocorp/ht/eaec1df_b1f3c24_6133770e/lib/python3.10/site-packages/selenium/webdriver/remote/errorhandler.py", line 229, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: cannot determine loading status
+from unknown error: cannot determine loading status
+from target frame detached
+  (Session info: chrome=126.0.6478.116)
+Stacktrace:
+0   chromedriver                        0x00000001045350e8 chromedriver + 5169384
+1   chromedriver                        0x000000010452cfba chromedriver + 5136314
+2   chromedriver                        0x00000001040a91a1 chromedriver + 401825
+3   chromedriver                        0x0000000104090215 chromedriver + 299541
+4   chromedriver                        0x000000010408e303 chromedriver + 291587
+5   chromedriver                        0x000000010408e78f chromedriver + 292751
+6   chromedriver                        0x00000001040bac1d chromedriver + 474141
+7   chromedriver                        0x00000001040b0451 chromedriver + 431185
+8   chromedriver                        0x00000001040b0331 chromedriver + 430897
+9   chromedriver                        0x000000010409ff16 chromedriver + 364310
+10  chromedriver                        0x000000010409f927 chromedriver + 362791
+11  chromedriver                        0x00000001040b582d chromedriver + 452653
+12  chromedriver                        0x00000001040bb1db chromedriver + 475611
+13  chromedriver                        0x000000010408ee8a chromedriver + 294538
+14  chromedriver                        0x00000001040b541c chromedriver + 451612
+15  chromedriver                        0x000000010413929e chromedriver + 991902
+16  chromedriver                        0x0000000104119853 chromedriver + 862291
+17  chromedriver                        0x00000001040e95c6 chromedriver + 665030
+18  chromedriver                        0x00000001040e9e4e chromedriver + 667214
+19  chromedriver                        0x00000001044f7d00 chromedriver + 4918528
+20  chromedriver                        0x00000001044fccfd chromedriver + 4939005
+21  chromedriver                        0x00000001044fd3d5 chromedriver + 4940757
+22  chromedriver                        0x00000001044d8de4 chromedriver + 4791780
+23  chromedriver                        0x00000001044fd6c9 chromedriver + 4941513
+24  chromedriver                        0x00000001044ca5b4 chromedriver + 4732340
+25  chromedriver                        0x000000010451d898 chromedriver + 5073048
+26  chromedriver                        0x000000010451da57 chromedriver + 5073495
+27  chromedriver                        0x000000010452cb6e chromedriver + 5135214
+28  libsystem_pthread.dylib             0x00007ff815f9418b _pthread_start + 99
+29  libsystem_pthread.dylib             0x00007ff815f8fae3 thread_start + 15
+
+
+2024-06-26 17:25:29.607 | INFO     | src.rpa_news_scraper:close:98 - Closing browser
+2024-06-26 17:26:11.040 | INFO     | src.rpa_news_scraper:open_site:26 - Opening site https://www.latimes.com/
+2024-06-26 17:27:11.446 | ERROR    | src.rpa_news_scraper:_finish_process:85 - Failed to open site: 
+
+Traceback (most recent call last):
+  File "/Users/Shared/robocorp/ht/eaec1df_b1f3c24_6133770e/lib/python3.10/site-packages/urllib3/connectionpool.py", line 789, in urlopen
+    response = self._make_request(
+  File "/Users/Shared/robocorp/ht/eaec1df_b1f3c24_6133770e/lib/python3.10/site-packages/urllib3/connectionpool.py", line 536, in _make_request
+    response = conn.getresponse()
+  File "/Users/Shared/robocorp/ht/eaec1df_b1f3c24_6133770e/lib/python3.10/site-packages/urllib3/connection.py", line 464, in getresponse
+    httplib_response = super().getresponse()
+  File "/Users/Shared/robocorp/ht/eaec1df_b1f3c24_6133770e/lib/python3.10/http/client.py", line 1375, in getresponse
+    response.begin()
+  File "/Users/Shared/robocorp/ht/eaec1df_b1f3c24_6133770e/lib/python3.10/http/client.py", line 318, in begin
+    version, status, reason = self._read_status()
+  File "/Users/Shared/robocorp/ht/eaec1df_b1f3c24_6133770e/lib/python3.10/http/client.py", line 287, in _read_status
+    raise RemoteDisconnected("Remote end closed connection without"
+http.client.RemoteDisconnected: Remote end closed connection without response
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/jones/PersonalProjects/TA-challenge/TA24/freshNews2/src/rpa_news_scraper.py", line 28, in open_site
+    self.browser.open_available_browser(self.base_url)
+  File "/Users/Shared/robocorp/ht/eaec1df_b1f3c24_6133770e/lib/python3.10/site-packages/RPA/Browser/common.py", line 36, in wrapper
+    return super_func(*args, headless=headless, **kwargs)
+  File "/Users/Shared/robocorp/ht/eaec1df_b1f3c24_6133770e/lib/python3.10/site-packages/RPA/Browser/Selenium.py", line 592, in open_available_browser
+    self.go_to(url)
+  File "/Users/Shared/robocorp/ht/eaec1df_b1f3c24_6133770e/lib/python3.10/site-packages/RPA/Browser/Selenium.py", line 130, in go_to
+    super().go_to(url)
+  File "/Users/Shared/robocorp/ht/eaec1df_b1f3c24_6133770e/lib/python3.10/site-packages/SeleniumLibrary/keywords/browsermanagement.py", line 521, in go_to
+    self.driver.get(url)
+  File "/Users/Shared/robocorp/ht/eaec1df_b1f3c24_6133770e/lib/python3.10/site-packages/selenium/webdriver/remote/webdriver.py", line 356, in get
+    self.execute(Command.GET, {"url": url})
+  File "/Users/Shared/robocorp/ht/eaec1df_b1f3c24_6133770e/lib/python3.10/site-packages/selenium/webdriver/remote/webdriver.py", line 345, in execute
+    response = self.command_executor.execute(driver_command, params)
+  File "/Users/Shared/robocorp/ht/eaec1df_b1f3c24_6133770e/lib/python3.10/site-packages/selenium/webdriver/remote/remote_connection.py", line 300, in execute
+    return self._request(command_info[0], url, body=data)
+  File "/Users/Shared/robocorp/ht/eaec1df_b1f3c24_6133770e/lib/python3.10/site-packages/selenium/webdriver/remote/remote_connection.py", line 321, in _request
+    response = self._conn.request(method, url, body=body, headers=headers)
+  File "/Users/Shared/robocorp/ht/eaec1df_b1f3c24_6133770e/lib/python3.10/site-packages/urllib3/_request_methods.py", line 144, in request
+    return self.request_encode_body(
+  File "/Users/Shared/robocorp/ht/eaec1df_b1f3c24_6133770e/lib/python3.10/site-packages/urllib3/_request_methods.py", line 279, in request_encode_body
+    return self.urlopen(method, url, **extra_kw)
+  File "/Users/Shared/robocorp/ht/eaec1df_b1f3c24_6133770e/lib/python3.10/site-packages/urllib3/poolmanager.py", line 443, in urlopen
+    response = conn.urlopen(method, u.request_uri, **kw)
+  File "/Users/Shared/robocorp/ht/eaec1df_b1f3c24_6133770e/lib/python3.10/site-packages/urllib3/connectionpool.py", line 843, in urlopen
+    retries = retries.increment(
+  File "/Users/Shared/robocorp/ht/eaec1df_b1f3c24_6133770e/lib/python3.10/site-packages/urllib3/util/retry.py", line 474, in increment
+    raise reraise(type(error), error, _stacktrace)
+  File "/Users/Shared/robocorp/ht/eaec1df_b1f3c24_6133770e/lib/python3.10/site-packages/urllib3/util/util.py", line 38, in reraise
+    raise value.with_traceback(tb)
+  File "/Users/Shared/robocorp/ht/eaec1df_b1f3c24_6133770e/lib/python3.10/site-packages/urllib3/connectionpool.py", line 789, in urlopen
+    response = self._make_request(
+  File "/Users/Shared/robocorp/ht/eaec1df_b1f3c24_6133770e/lib/python3.10/site-packages/urllib3/connectionpool.py", line 536, in _make_request
+    response = conn.getresponse()
+  File "/Users/Shared/robocorp/ht/eaec1df_b1f3c24_6133770e/lib/python3.10/site-packages/urllib3/connection.py", line 464, in getresponse
+    httplib_response = super().getresponse()
+  File "/Users/Shared/robocorp/ht/eaec1df_b1f3c24_6133770e/lib/python3.10/http/client.py", line 1375, in getresponse
+    response.begin()
+  File "/Users/Shared/robocorp/ht/eaec1df_b1f3c24_6133770e/lib/python3.10/http/client.py", line 318, in begin
+    version, status, reason = self._read_status()
+  File "/Users/Shared/robocorp/ht/eaec1df_b1f3c24_6133770e/lib/python3.10/http/client.py", line 287, in _read_status
+    raise RemoteDisconnected("Remote end closed connection without"
+urllib3.exceptions.ProtocolError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+
+2024-06-26 17:27:11.448 | INFO     | src.rpa_news_scraper:close:95 - Closing browser
+2024-06-26 17:30:28.963 | INFO     | src.rpa_news_scraper:open_site:26 - Opening site https://www.latimes.com/
+2024-06-26 17:30:38.501 | INFO     | src.rpa_news_scraper:search:34 - Searching for 'robotics'
+2024-06-26 17:32:14.005 | ERROR    | src.rpa_news_scraper:_finish_process:85 - Search failed: 
+
+Traceback (most recent call last):
+  File "/Users/jones/PersonalProjects/TA-challenge/TA24/freshNews2/src/rpa_news_scraper.py", line 35, in search
+    self.browser.click_button(self.locators.search_field_button)
+  File "/Users/Shared/robocorp/ht/eaec1df_b1f3c24_6133770e/lib/python3.10/site-packages/SeleniumLibrary/keywords/element.py", line 602, in click_button
+    element = self.find_element(locator, tag="button")
+  File "/Users/Shared/robocorp/ht/eaec1df_b1f3c24_6133770e/lib/python3.10/site-packages/SeleniumLibrary/base/context.py", line 82, in find_element
+    return self.element_finder.find(locator, tag, True, required, parent)
+  File "/Users/Shared/robocorp/ht/eaec1df_b1f3c24_6133770e/lib/python3.10/site-packages/SeleniumLibrary/locators/elementfinder.py", line 93, in find
+    return self._find(locators[-1], tag, first_only, required, element)
+  File "/Users/Shared/robocorp/ht/eaec1df_b1f3c24_6133770e/lib/python3.10/site-packages/SeleniumLibrary/locators/elementfinder.py", line 123, in _find
+    elements = strategy(criteria, tag, constraints, parent=parent or self.driver)
+  File "/Users/Shared/robocorp/ht/eaec1df_b1f3c24_6133770e/lib/python3.10/site-packages/SeleniumLibrary/locators/elementfinder.py", line 211, in _find_by_css_selector
+    parent.find_elements(By.CSS_SELECTOR, criteria), tag, constraints
+  File "/Users/Shared/robocorp/ht/eaec1df_b1f3c24_6133770e/lib/python3.10/site-packages/selenium/webdriver/remote/webdriver.py", line 771, in find_elements
+    return self.execute(Command.FIND_ELEMENTS, {"using": by, "value": value})["value"] or []
+  File "/Users/Shared/robocorp/ht/eaec1df_b1f3c24_6133770e/lib/python3.10/site-packages/selenium/webdriver/remote/webdriver.py", line 347, in execute
+    self.error_handler.check_response(response)
+  File "/Users/Shared/robocorp/ht/eaec1df_b1f3c24_6133770e/lib/python3.10/site-packages/selenium/webdriver/remote/errorhandler.py", line 229, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.NoSuchWindowException: Message: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=126.0.6478.116)
+Stacktrace:
+0   chromedriver                        0x000000010335e0e8 chromedriver + 5169384
+1   chromedriver                        0x0000000103355fba chromedriver + 5136314
+2   chromedriver                        0x0000000102ed236c chromedriver + 402284
+3   chromedriver                        0x0000000102ea75f4 chromedriver + 226804
+4   chromedriver                        0x0000000102f4b53d chromedriver + 898365
+5   chromedriver                        0x0000000102f61908 chromedriver + 989448
+6   chromedriver                        0x0000000102f42853 chromedriver + 862291
+7   chromedriver                        0x0000000102f125c6 chromedriver + 665030
+8   chromedriver                        0x0000000102f12e4e chromedriver + 667214
+9   chromedriver                        0x0000000103320d00 chromedriver + 4918528
+10  chromedriver                        0x0000000103325cfd chromedriver + 4939005
+11  chromedriver                        0x00000001033263d5 chromedriver + 4940757
+12  chromedriver                        0x0000000103301de4 chromedriver + 4791780
+13  chromedriver                        0x00000001033266c9 chromedriver + 4941513
+14  chromedriver                        0x00000001032f35b4 chromedriver + 4732340
+15  chromedriver                        0x0000000103346898 chromedriver + 5073048
+16  chromedriver                        0x0000000103346a57 chromedriver + 5073495
+17  chromedriver                        0x0000000103355b6e chromedriver + 5135214
+18  libsystem_pthread.dylib             0x00007ff815f9418b _pthread_start + 99
+19  libsystem_pthread.dylib             0x00007ff815f8fae3 thread_start + 15
+
+
+2024-06-26 17:32:14.009 | INFO     | src.rpa_news_scraper:close:95 - Closing browser
+2024-06-26 17:33:47.053 | INFO     | src.rpa_news_scraper:open_site:26 - Opening site https://www.latimes.com/
+2024-06-26 17:36:28.202 | INFO     | src.rpa_news_scraper:search:34 - Searching for 'robotics'
+2024-06-26 17:38:23.711 | ERROR    | src.rpa_news_scraper:_finish_process:85 - Search failed: 
+
+Traceback (most recent call last):
+  File "/Users/jones/PersonalProjects/TA-challenge/TA24/freshNews2/src/rpa_news_scraper.py", line 38, in search
+    self.browser.wait_until_page_contains(self.locators.filter)
+  File "/Users/Shared/robocorp/ht/eaec1df_b1f3c24_6133770e/lib/python3.10/site-packages/SeleniumLibrary/keywords/waiting.py", line 193, in wait_until_page_contains
+    self._wait_until(
+  File "/Users/Shared/robocorp/ht/eaec1df_b1f3c24_6133770e/lib/python3.10/site-packages/SeleniumLibrary/keywords/waiting.py", line 426, in _wait_until
+    self._wait_until_worker(condition, timeout, error)
+  File "/Users/Shared/robocorp/ht/eaec1df_b1f3c24_6133770e/lib/python3.10/site-packages/SeleniumLibrary/keywords/waiting.py", line 443, in _wait_until_worker
+    raise AssertionError(not_found or error)
+AssertionError: Text 'css:div.search-results-module-filters-title' did not appear in 5 seconds.
+
+2024-06-26 17:38:23.714 | INFO     | src.rpa_news_scraper:close:95 - Closing browser
+2024-06-26 20:23:43.870 | INFO     | src.rpa_news_scraper:open_site:26 - Opening site https://www.latimes.com/
+2024-06-26 20:29:24.670 | ERROR    | src.rpa_news_scraper:_finish_process:85 - Failed to open site: 
+
+Traceback (most recent call last):
+  File "/Users/jones/PersonalProjects/TA-challenge/TA24/freshNews2/src/rpa_news_scraper.py", line 28, in open_site
+    self.browser.open_available_browser(self.base_url, headless=True)
+  File "/Users/Shared/robocorp/ht/eaec1df_b1f3c24_6133770e/lib/python3.10/site-packages/RPA/Browser/common.py", line 36, in wrapper
+    return super_func(*args, headless=headless, **kwargs)
+  File "/Users/Shared/robocorp/ht/eaec1df_b1f3c24_6133770e/lib/python3.10/site-packages/RPA/Browser/Selenium.py", line 592, in open_available_browser
+    self.go_to(url)
+  File "/Users/Shared/robocorp/ht/eaec1df_b1f3c24_6133770e/lib/python3.10/site-packages/RPA/Browser/Selenium.py", line 130, in go_to
+    super().go_to(url)
+  File "/Users/Shared/robocorp/ht/eaec1df_b1f3c24_6133770e/lib/python3.10/site-packages/SeleniumLibrary/keywords/browsermanagement.py", line 521, in go_to
+    self.driver.get(url)
+  File "/Users/Shared/robocorp/ht/eaec1df_b1f3c24_6133770e/lib/python3.10/site-packages/selenium/webdriver/remote/webdriver.py", line 356, in get
+    self.execute(Command.GET, {"url": url})
+  File "/Users/Shared/robocorp/ht/eaec1df_b1f3c24_6133770e/lib/python3.10/site-packages/selenium/webdriver/remote/webdriver.py", line 347, in execute
+    self.error_handler.check_response(response)
+  File "/Users/Shared/robocorp/ht/eaec1df_b1f3c24_6133770e/lib/python3.10/site-packages/selenium/webdriver/remote/errorhandler.py", line 229, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: timeout: Timed out receiving message from renderer: 299.930
+  (Session info: chrome=126.0.6478.127)
+Stacktrace:
+0   chromedriver                        0x0000000104bfc0e8 chromedriver + 5169384
+1   chromedriver                        0x0000000104bf3fba chromedriver + 5136314
+2   chromedriver                        0x000000010477036c chromedriver + 402284
+3   chromedriver                        0x0000000104757752 chromedriver + 300882
+4   chromedriver                        0x000000010475725b chromedriver + 299611
+5   chromedriver                        0x0000000104755303 chromedriver + 291587
+6   chromedriver                        0x000000010475578f chromedriver + 292751
+7   chromedriver                        0x0000000104765ea7 chromedriver + 360103
+8   chromedriver                        0x000000010477c82d chromedriver + 452653
+9   chromedriver                        0x00000001047821db chromedriver + 475611
+10  chromedriver                        0x0000000104755e8a chromedriver + 294538
+11  chromedriver                        0x000000010477c6b1 chromedriver + 452273
+12  chromedriver                        0x000000010480029e chromedriver + 991902
+13  chromedriver                        0x00000001047e0853 chromedriver + 862291
+14  chromedriver                        0x00000001047b05c6 chromedriver + 665030
+15  chromedriver                        0x00000001047b0e4e chromedriver + 667214
+16  chromedriver                        0x0000000104bbed00 chromedriver + 4918528
+17  chromedriver                        0x0000000104bc3cfd chromedriver + 4939005
+18  chromedriver                        0x0000000104bc43d5 chromedriver + 4940757
+19  chromedriver                        0x0000000104b9fde4 chromedriver + 4791780
+20  chromedriver                        0x0000000104bc46c9 chromedriver + 4941513
+21  chromedriver                        0x0000000104b915b4 chromedriver + 4732340
+22  chromedriver                        0x0000000104be4898 chromedriver + 5073048
+23  chromedriver                        0x0000000104be4a57 chromedriver + 5073495
+24  chromedriver                        0x0000000104bf3b6e chromedriver + 5135214
+25  libsystem_pthread.dylib             0x00007ff80f2f818b _pthread_start + 99
+26  libsystem_pthread.dylib             0x00007ff80f2f3ae3 thread_start + 15
+
+
+2024-06-26 20:29:24.672 | INFO     | src.rpa_news_scraper:close:95 - Closing browser
+2024-06-26 20:50:26.990 | INFO     | src.rpa_news_scraper:open_site:26 - Opening site https://www.latimes.com/
+2024-06-26 20:50:26.996 | ERROR    | src.rpa_news_scraper:_finish_process:105 - Failed to open site: 
+
+Traceback (most recent call last):
+  File "/Users/jones/PersonalProjects/TA-challenge/TA24/freshNews2/src/rpa_news_scraper.py", line 48, in open_site
+    self.browser.open_available_browser(self.base_url, options=chrome_options)
+  File "/Users/Shared/robocorp/ht/eaec1df_b1f3c24_6133770e/lib/python3.10/site-packages/RPA/Browser/common.py", line 36, in wrapper
+    return super_func(*args, headless=headless, **kwargs)
+  File "/Users/Shared/robocorp/ht/eaec1df_b1f3c24_6133770e/lib/python3.10/site-packages/RPA/Browser/Selenium.py", line 589, in open_available_browser
+    raise BrowserNotFoundError(msg)
+RPA.Browser.Selenium.BrowserNotFoundError: Failed to start a browser:
+- Chrome: Option type 'headless' not supported, choose from ['arguments', 'capabilities', 'binary_location'] or try providing them as string or object
+- Firefox: Option type 'headless' not supported, choose from ['arguments', 'capabilities', 'binary_location'] or try providing them as string or object
+- Edge: Option type 'headless' not supported, choose from ['arguments', 'capabilities', 'binary_location'] or try providing them as string or object
+- Safari: Option type 'headless' not supported, choose from ['arguments', 'capabilities', 'binary_location'] or try providing them as string or object
+
+
+2024-06-26 20:50:26.997 | INFO     | src.rpa_news_scraper:close:115 - Closing browser
+2024-06-26 20:51:08.652 | INFO     | src.rpa_news_scraper:open_site:26 - Opening site https://www.latimes.com/
+2024-06-26 20:51:08.659 | ERROR    | src.rpa_news_scraper:_finish_process:104 - Failed to open site: 
+
+Traceback (most recent call last):
+  File "/Users/jones/PersonalProjects/TA-challenge/TA24/freshNews2/src/rpa_news_scraper.py", line 47, in open_site
+    self.browser.open_available_browser(self.base_url, options=chrome_options)
+  File "/Users/Shared/robocorp/ht/eaec1df_b1f3c24_6133770e/lib/python3.10/site-packages/RPA/Browser/common.py", line 36, in wrapper
+    return super_func(*args, headless=headless, **kwargs)
+  File "/Users/Shared/robocorp/ht/eaec1df_b1f3c24_6133770e/lib/python3.10/site-packages/RPA/Browser/Selenium.py", line 589, in open_available_browser
+    raise BrowserNotFoundError(msg)
+RPA.Browser.Selenium.BrowserNotFoundError: Failed to start a browser:
+- Chrome: Option type 'args' not supported, choose from ['arguments', 'capabilities', 'binary_location'] or try providing them as string or object
+- Firefox: Option type 'args' not supported, choose from ['arguments', 'capabilities', 'binary_location'] or try providing them as string or object
+- Edge: Option type 'args' not supported, choose from ['arguments', 'capabilities', 'binary_location'] or try providing them as string or object
+- Safari: Option type 'args' not supported, choose from ['arguments', 'capabilities', 'binary_location'] or try providing them as string or object
+
+
+2024-06-26 20:51:08.660 | INFO     | src.rpa_news_scraper:close:114 - Closing browser
+2024-06-26 20:54:48.379 | INFO     | src.rpa_news_scraper:open_site:56 - Opening site https://www.latimes.com/
+2024-06-26 20:56:41.884 | INFO     | src.rpa_news_scraper:search:65 - Searching for 'robotics'
+2024-06-26 20:58:40.206 | ERROR    | src.rpa_news_scraper:_finish_process:116 - Search failed: 
+
+Traceback (most recent call last):
+  File "/Users/jones/PersonalProjects/TA-challenge/TA24/freshNews2/src/rpa_news_scraper.py", line 69, in search
+    self.browser.wait_until_page_contains(self.locators.filter)
+  File "/Users/Shared/robocorp/ht/eaec1df_b1f3c24_6133770e/lib/python3.10/site-packages/SeleniumLibrary/keywords/waiting.py", line 193, in wait_until_page_contains
+    self._wait_until(
+  File "/Users/Shared/robocorp/ht/eaec1df_b1f3c24_6133770e/lib/python3.10/site-packages/SeleniumLibrary/keywords/waiting.py", line 426, in _wait_until
+    self._wait_until_worker(condition, timeout, error)
+  File "/Users/Shared/robocorp/ht/eaec1df_b1f3c24_6133770e/lib/python3.10/site-packages/SeleniumLibrary/keywords/waiting.py", line 443, in _wait_until_worker
+    raise AssertionError(not_found or error)
+AssertionError: Text 'css:div.search-results-module-filters-title' did not appear in 5 seconds.
+
+2024-06-26 20:58:40.208 | INFO     | src.rpa_news_scraper:close:126 - Closing browser
