@@ -6,10 +6,6 @@
 	],
 	"settings": {
 		"robocorp.codeLens.roboLaunch": true,
-		"robocorp.language-server.python": "",
-		"python.analysis.extraPaths": [
-			"/Users/jones/PersonalProjects/TA-challenge/TA24/freshNews2/."
-		],
 		"python.terminal.activateEnvironment": false
 	}
 }
