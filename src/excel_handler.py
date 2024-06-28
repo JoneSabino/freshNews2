@@ -1,6 +1,7 @@
 from RPA.Excel.Files import Files
 import re
-from robocorp import log
+from loguru import logger as log
+
 
 class ExcelHandler:
     def __init__(self, file_name):

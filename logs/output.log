@@ -1,0 +1,9 @@
+2024-06-28 03:57:01.763 | INFO     | src.rpa_news_scraper:_open_site:91 - Opening site https://www.latimes.com/
+2024-06-28 03:57:15.834 | INFO     | src.rpa_news_scraper:_search:100 - Searching for 'The average wedding costs'
+2024-06-28 03:57:20.123 | INFO     | src.rpa_news_scraper:_select_topic:123 - Selecting topic 'Lifestyle'
+2024-06-28 03:57:25.164 | INFO     | src.rpa_news_scraper:_wait_loading_animation:112 - Waiting for loading animation to finish
+2024-06-28 03:57:27.260 | INFO     | src.rpa_news_scraper:_parse_articles:149 - Parsing articles
+2024-06-28 03:57:33.494 | INFO     | src.rpa_news_scraper:close:270 - Browser closed
+2024-06-28 03:57:33.512 | INFO     | src.excel_handler:__init__:23 - Excel file output\news_data.xlsx created
+2024-06-28 03:57:33.517 | INFO     | src.image_downloader:__init__:11 - Output directory output created
+2024-06-28 03:57:33.547 | INFO     | src.excel_handler:save:47 - Excel file output\news_data.xlsx saved

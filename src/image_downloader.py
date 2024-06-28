@@ -1,6 +1,6 @@
 import os
 import requests
-from robocorp import log
+from loguru import logger as log
 import uuid
 
 
@@ -9,10 +9,10 @@ class ImageDownloader:
         self.output_dir = output_dir
         os.makedirs(output_dir, exist_ok=True)
         log.info(f"Output directory {self.output_dir} created")
-    
+
     def _extract_filename(self, url):
-        start_pos = url.rfind('%2F')
-        return url[start_pos + 3:] if start_pos != -1 else "unnamed.jpg"
+        start_pos = url.rfind("%2F")
+        return url[start_pos + 3 :] if start_pos != -1 else "unnamed.jpg"
 
     def download_image(self, url):
         log.info(f"Downloading image from {url}")

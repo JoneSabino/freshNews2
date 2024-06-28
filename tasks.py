@@ -5,11 +5,18 @@ from src.excel_handler import ExcelHandler
 from src.image_downloader import ImageDownloader
 from robocorp.tasks import task
 from box import Box
+from loguru import logger as log
 
 
 @task
 def main():
-
+    log.add(
+        "logs/output.log",
+        rotation="10 MB",
+        backtrace=True,
+        diagnose=True,
+        level="DEBUG",
+    )
     work_items = WorkItems()
     work_items.get_input_work_item()
     params = Box(work_items.get_work_item_variables())
