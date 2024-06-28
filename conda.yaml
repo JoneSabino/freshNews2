@@ -8,11 +8,8 @@ channels:
 dependencies:
   - python=3.10.12                # https://pyreadiness.org/3.10
   - pip=23.2.1                    # https://pip.pypa.io/en/stable/news
-  - robocorp-truststore=0.8.0     # https://pypi.org/project/robocorp-truststore/
   - loguru=0.7.2                  # https://pypi.org/project/loguru
   - python-box=7.2.0              # https://pypi.org/project/python-box
   - pip:
     - rpaframework==28.6.0        # https://rpaframework.org/releasenotes.html
     - robocorp==2.0.2             # https://pypi.org/project/robocorp
-    - robocorp-browser==2.3.3     # https://pypi.org/project/robocorp-browser
-    - pytest==8.2.2               # https://pypi.org/project/pytest
