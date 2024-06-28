@@ -55,6 +55,14 @@ class ExcelHandler:
 
     @staticmethod
     def contains_money(title, description):
-        money_patterns = [r"\$\d+(\.\d+)?", r"\d+ dollars", r"\d+ USD"]
+        money_patterns = [
+            r"\$\d+(\.\d+)?",  # $100 or $100.50
+            r"\d+ dollars",  # 100 dollars
+            r"\d+ USD",  # 100 USD
+            r"\d+k USD",  # 100k USD
+            r"\d+m USD",  # 100m USD
+            r"\d+(\.\d+)?k dollars",  # 100k dollars or 100.5k dollars
+            r"\d+(\.\d+)?m dollars",  # 100m dollars or 100.5m dollars
+        ]
         combined_text = f"{title} {description}"
         return any(re.search(pattern, combined_text) for pattern in money_patterns)
