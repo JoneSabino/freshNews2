@@ -15,21 +15,6 @@ from loguru import logger as log
 
 
 class RPANewsScraper:
-    """
-    A class to scrape news articles from a specific website based on search criteria.
-
-    - Initializes the scraper with search phrase, topic, and months.
-    - Provides methods to extract data by opening the site, searching, selecting topics, parsing articles, and closing the browser.
-
-    Args:
-        search_phrase (str): The search phrase for news articles.
-        topic (str): The topic of interest for news articles.
-        months (int): The number of months to consider for article dates.
-
-    Returns:
-        None
-    """
-
     def __init__(self, search_phrase: str, topic: str, months: int):
         self.base_url = Config.BASE_URL
         self.search_phrase = search_phrase
@@ -56,7 +41,7 @@ class RPANewsScraper:
                 "search_results": "css:ul.search-results-module-results-menu li",
                 "article_title": "css:h3.promo-title > a",
                 "article_description": "css:p.promo-description",
-                "article_date": "css:p.promo-timestamp",
+                "article_date": "css:p.promo-timestamp",  # attr data-timestamp
                 "article_image": "css:img.image",
                 "next_page": "css:div.search-results-module-next-page",
                 "loading_icon": "css:div.loading-icon",
@@ -103,8 +88,10 @@ class RPANewsScraper:
                 locator=self.locators.search_field, text=self.search_phrase
             )
             self.browser.click_button(self.locators.submit_button)
+
             self.browser.wait_until_element_is_visible(self.locators.see_all_topics)
             self.browser.click_element(self.locators.see_all_topics)
+
         except Exception:
             self._finish_process("Search failed: ", traceback.format_exc())
 
@@ -112,7 +99,7 @@ class RPANewsScraper:
         log.info("Waiting for loading animation to finish")
         with contextlib.suppress(AssertionError):
             self.browser.wait_until_element_is_visible(
-                self.locators.loading_icon, timeout=3
+                self.locators.loading_icon, timeout=2
             )
             self.browser.wait_until_element_is_not_visible(
                 self.locators.loading_icon, timeout=1
@@ -122,147 +109,125 @@ class RPANewsScraper:
         try:
             log.info(f"Selecting topic '{self.topic}'")
             self.browser.wait_until_element_is_visible(self.locators.topic)
-            total_articles_number_formatted = (
-                self._get_total_articles_number_formatted()
-            )
+            total_articles_number = self.browser.get_text(
+                self.locators.topic_selected_count
+            )[1:-1]
+            total_articles_number_int = int(total_articles_number)
+            total_articles_number_formatted = f"{total_articles_number_int:,}"
             search_results_count = self.locators.search_results_count.replace(
                 "<?>", total_articles_number_formatted
             )
             self.browser.select_checkbox(self.locators.topic)
+
             self.browser.wait_until_element_is_visible(search_results_count)
             self.browser.select_from_list_by_value(
                 self.locators.sort_by_button, Config.NEWEST
             )
+
             self._wait_loading_animation()
         except Exception:
             self._finish_process("Selecting topic failed: ", traceback.format_exc())
-
-    def _get_total_articles_number_formatted(self) -> str:
-        total_articles_number = self.browser.get_text(
-            self.locators.topic_selected_count
-        )[1:-1]
-        total_articles_number_int = int(total_articles_number)
-        return f"{total_articles_number_int:,}"
 
     def _parse_articles(self) -> None:
         try:
             log.info("Parsing articles")
             search_results = self.browser.get_webelements(self.locators.search_results)
+
             for index, article in enumerate(search_results):
-                self._parse_single_article(article)
-                self._click_next_page(search_results, index)
+                date_element = self.browser.find_element(
+                    self.locators.article_date, article
+                )
+                date_timestamp = self.browser.get_element_attribute(
+                    date_element, "data-timestamp"
+                )
+                date = datetime.fromtimestamp(int(date_timestamp) / 1000, timezone.utc)
+
+                is_within_date_range = self._is_within_date_range(date, self.months)
+
+                if is_within_date_range:
+                    log.info(
+                        f"Found article within date range: {date.strftime('%Y-%m-%d')}"
+                    )
+                    title_element = self.browser.find_element(
+                        self.locators.article_title, article
+                    )
+                    try:
+                        description_element = self.browser.find_element(
+                            self.locators.article_description, article
+                        )
+                        description = self.browser.get_text(description_element)
+                    except ElementNotFound:
+                        description = ""  # Default value if description is not found
+
+                    title = self.browser.get_text(title_element)
+
+                    image_url = self.browser.find_element(
+                        self.locators.article_image, article
+                    ).get_attribute("src")
+                    self.articles.append(
+                        {
+                            "title": title,
+                            "description": description,
+                            "date": date,
+                            "image_url": image_url,
+                        }
+                    )
+                self._click_next_page(search_results, index, is_within_date_range)
         except Exception:
             self._finish_process("Parsing articles failed: ", traceback.format_exc())
 
-    def _parse_single_article(self, article):
-        date_element = self.browser.find_element(self.locators.article_date, article)
-        date_timestamp = self.browser.get_element_attribute(
-            date_element, "data-timestamp"
-        )
-        date = datetime.fromtimestamp(int(date_timestamp) / 1000, timezone.utc)
-        if self._is_within_date_range(date, self.months):
-            log.info(f"Found article within date range: {date.strftime('%Y-%m-%d')}")
-            title = self.browser.get_text(
-                self.browser.find_element(self.locators.article_title, article)
-            )
-            description = self._get_article_description(article)
-            image_url = self.browser.find_element(
-                self.locators.article_image, article
-            ).get_attribute("src")
-            self.articles.append(
-                {
-                    "title": title,
-                    "description": description,
-                    "date": date,
-                    "image_url": image_url,
-                }
-            )
-
-    def _get_article_description(self, article) -> str:
-        try:
-            description_element = self.browser.find_element(
-                self.locators.article_description, article
-            )
-            return self.browser.get_text(description_element)
-        except ElementNotFound:
-            return ""  # Default value if description is not found
-
-    def _click_next_page(self, search_results, index):
-        if index != len(search_results) - 1:
-            return
-        try:
-            next_page_div = self.browser.find_element(self.locators.next_page)
-            svg_child = self.browser.find_element("css:svg", next_page_div)
-            if self.browser.get_element_attribute(svg_child, "data-inactive"):
-                log.info("Reached the last page, no further pages to click.")
-                return
-            self._retry_click_next_page()
-        except (ElementNotFound, NoSuchElementException):
-            log.info("Next page button not found, assuming last page reached")
-
-    def _retry_click_next_page(self):
-        log.info("Checking the next page")
-        for attempt in range(3):  # Retry up to 3 times
-            try:
-                self._handle_shadow_root()
-                self.browser.click_element(self.locators.next_page)
-                self._wait_loading_animation()
-                self._parse_articles()
-                break  # Break the loop if click is successful
-            except (
-                ElementClickInterceptedException,
-                StaleElementReferenceException,
-            ) as e:
-                log.warning(f"Attempt {attempt + 1}: Failed to click next page - {e}")
-                self._wait_loading_animation()  # Optionally wait before retrying
-        else:
-            log.critical("Failed to click next page after multiple attempts")
-
-    def _handle_shadow_root(self):
-        try:
-            if shadow_host_element := self.browser.find_element(
-                self.locators.shadow_host
-            ):
-                shadow_host_element_id = shadow_host_element.get_attribute("id")
-                self.browser.execute_javascript(
-                    f"document.getElementById('{shadow_host_element_id}').remove();"
-                )
-                log.info("Removed shadow host element")
-        except (ElementNotFound, NoSuchElementException, AssertionError):
-            log.info("No shadow host element found")
-
-    def _finish_process(self, message: str, error: str) -> None:
-        log.critical(f"{message}\n\n{error}")
+    def _finish_process(self, message: str, traceback: str) -> None:
+        log.critical(f"{message}\n\n{traceback}")
         self.close()
         raise
 
     def _calculate_month_range(self, months: int) -> tuple:
         today = datetime.now()
-        current_year, current_month = today.year, today.month
-        start_year, start_month = self._get_start_date(
-            current_year, current_month, months
-        )
+        current_year = today.year
+        current_month = today.month
+
+        if months <= 1:
+            # Only the current month
+            start_year, start_month = current_year, current_month
+        else:
+            start_year, start_month = self._get_start_date(
+                current_year, current_month, months
+            )
+
         end_year, end_month = current_year, current_month
+
         return (start_year, start_month), (end_year, end_month)
 
     def _get_start_date(
         self, current_year: int, current_month: int, months: int
     ) -> tuple:
+        """
+        Calculate the start year and month by going back the specified number of months.
+        """
         start_month = (current_month - months) % 12
         start_year = current_year + (current_month - months) // 12
         if start_month <= 0:
             start_month += 12
             start_year -= 1
+
         return start_year, start_month
 
     def _is_within_date_range(self, check_date: datetime, months: int) -> bool:
+        """
+        Check if the given date is within the range defined
+        by the number of months back from the current date.
+        """
         (start_year, start_month), (end_year, end_month) = self._calculate_month_range(
             months
         )
-        check_year, check_month = check_date.year, check_date.month
+
+        check_year = check_date.year
+        check_month = check_date.month
+
         start_period = start_year * 12 + start_month
         end_period = end_year * 12 + end_month
         check_period = check_year * 12 + check_month
+
         return start_period <= check_period <= end_period
 
     def close(self) -> None:
@@ -275,3 +240,46 @@ class RPANewsScraper:
         self._select_topic()
         self._parse_articles()
         self.close()
+
+    def _handle_shadow_root(self):
+        try:
+            if shadow_host_element := self.browser.find_element(
+                self.locators.shadow_host
+            ):
+                # Get the ID of the shadow host element
+                shadow_host_element_id = shadow_host_element.get_attribute("id")
+                # Use JavaScript to remove the shadow host element by ID
+                self.browser.execute_javascript(
+                    f"document.getElementById('{shadow_host_element_id}').remove();"
+                )
+                log.info("Removed shadow host element")
+        except (ElementNotFound, NoSuchElementException, AssertionError):
+            log.info("No shadow host element found")
+
+    def _click_next_page(self, search_results, index, is_within_date_range):
+        if index != len(search_results) - 1 or not is_within_date_range:
+            return
+
+        next_page_div = self.browser.find_element(self.locators.next_page)
+        svg_child = self.browser.find_element("css:svg", next_page_div)
+        data_inactive = self.browser.get_element_attribute(svg_child, "data-inactive")
+        if data_inactive is not None:
+            log.info("Reached the last page, no further pages to click.")
+            return  # Exit the method as no further pages are available
+
+        log.info("Checking the next page")
+
+        for attempt in range(3):  # Retry up to 3 times
+            try:
+                self._handle_shadow_root()
+                self.browser.click_element(self.locators.next_page)
+                self._parse_articles()
+                break  # Break the loop if click is successful
+            except (
+                ElementClickInterceptedException,
+                StaleElementReferenceException,
+            ) as e:
+                log.warning(f"Attempt {attempt + 1}: Failed to click next page - {e}")
+                self._wait_loading_animation()  # Optionally wait before retrying
+        else:
+            log.critical("Failed to click next page after multiple attempts")
