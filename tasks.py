@@ -19,15 +19,15 @@ def main():
     news_scraper = RPANewsScraper(params.search_phrase, params.topic, params.months)
     news_scraper.extract_data()
 
-    # excel_handler = ExcelHandler(Config.EXCEL_FILE)
-    # image_downloader = ImageDownloader(Config.OUTPUT_DIR)
+    excel_handler = ExcelHandler(Config.EXCEL_FILE)
+    image_downloader = ImageDownloader(Config.OUTPUT_DIR)
 
-    # for article in news_scraper.articles:
-    #     article["image_file"] = image_downloader.download_image(article["image_url"])
-    #     excel_handler.add_article(article, params.search_phrase)
+    for article in news_scraper.articles:
+        article["image_file"] = image_downloader.download_image(article["image_url"])
+        excel_handler.add_article(article, params.search_phrase)
 
-    # excel_handler.save()
-    # work_items.create_output_work_item(files=Config.OUTPUT_DIR, save=True)
+    excel_handler.save()
+    work_items.create_output_work_item(files=Config.OUTPUT_DIR, save=True)
 
 
 if __name__ == "__main__":
