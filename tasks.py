@@ -1,5 +1,4 @@
 from RPA.Robocorp.WorkItems import WorkItems
-from loguru import logger
 from src.config import Config
 from src.rpa_news_scraper import RPANewsScraper
 from src.excel_handler import ExcelHandler
@@ -10,7 +9,6 @@ from box import Box
 
 @task
 def main():
-    # logger.add("logs/scraper.log", rotation="500 MB")
 
     work_items = WorkItems()
     work_items.get_input_work_item()
@@ -27,7 +25,7 @@ def main():
         excel_handler.add_article(article, params.search_phrase)
 
     excel_handler.save()
-    work_items.create_output_work_item(files=Config.OUTPUT_DIR, save=True)
+    work_items.create_output_work_item(files=Config.EXCEL_FILE, save=True)
 
 
 if __name__ == "__main__":

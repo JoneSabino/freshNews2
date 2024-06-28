@@ -3,7 +3,7 @@
     "payload": {
       "search_phrase": "robotics",
       "topic": "Lifestyle",
-      "months": 3
+      "months": 24
     },
     "files": {
       "orders.xlsx": "orders.xlsx"

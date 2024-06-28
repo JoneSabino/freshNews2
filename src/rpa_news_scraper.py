@@ -1,12 +1,13 @@
 import contextlib
 from RPA.Browser.Selenium import Selenium
 from datetime import datetime, timezone
-from loguru import logger
 from src.config import Config
 import traceback
 from box import Box
 from selenium.webdriver.chrome.options import Options
-
+from robocorp import log
+from selenium.common.exceptions import NoSuchElementException, ElementClickInterceptedException, StaleElementReferenceException
+from SeleniumLibrary.errors import ElementNotFound
 
 class RPANewsScraper:
     def __init__(self, search_phrase: str, topic: str, months: int):
@@ -36,14 +37,15 @@ class RPANewsScraper:
                 "article_image": "css:img.image",
                 "next_page": "css:div.search-results-module-next-page",
                 "loading_icon": "css:div.loading-icon",
+                "shadow_host": "css:modality-custom-element[name='metering-bottompanel']",
             }
         )
 
     def _create_webdriver_options(self) -> dict:
         options = Options()
         options.add_argument("--enable-automation")
-        options.add_argument("--headless")
-        options.add_argument("--window-size=1024,768")
+        # options.add_argument("--headless")
+        options.add_argument("--window-size=1920,1080")
         options.add_argument("--no-sandbox")
         options.add_argument("--disable-extensions")
         options.add_argument("--dns-prefetch-disable")
@@ -63,7 +65,7 @@ class RPANewsScraper:
         }
 
     def _open_site(self) -> None:
-        logger.info(f"Opening site {self.base_url}")
+        log.info(f"Opening site {self.base_url}")
         try:
             options = self._create_webdriver_options()
             self.browser.open_available_browser(self.base_url, options=options)
@@ -72,7 +74,7 @@ class RPANewsScraper:
 
     def _search(self) -> None:
         try:
-            logger.info(f"Searching for '{self.search_phrase}'")
+            log.info(f"Searching for '{self.search_phrase}'")
             self.browser.wait_and_click_button(self.locators.search_field_button)
             self.browser.input_text(
                 locator=self.locators.search_field, text=self.search_phrase
@@ -86,6 +88,7 @@ class RPANewsScraper:
             self._finish_process("Search failed: ", traceback.format_exc())
 
     def _wait_loading_animation(self) -> None:
+        log.info("Waiting for loading animation to finish")
         with contextlib.suppress(AssertionError):
             self.browser.wait_until_element_is_visible(
                 self.locators.loading_icon, timeout=5
@@ -96,6 +99,7 @@ class RPANewsScraper:
 
     def _select_topic(self) -> None:
         try:
+            log.info(f"Selecting topic '{self.topic}'")
             self.browser.wait_until_element_is_visible(self.locators.topic)
             total_articles_number = self.browser.get_text(
                 self.locators.topic_selected_count
@@ -116,6 +120,7 @@ class RPANewsScraper:
 
     def _parse_articles(self) -> None:
         try:
+            log.info("Parsing articles")
             search_results = self.browser.get_webelements(self.locators.search_results)
 
             for index, article in enumerate(search_results):
@@ -130,16 +135,19 @@ class RPANewsScraper:
                 is_within_date_range = self._is_within_date_range(date, self.months)
 
                 if is_within_date_range:
-                    logger.info(f"Article {article}")
+                    log.info(f"Found article within date range: {date.strftime('%Y-%m-%d')}")
                     title_element = self.browser.find_element(
                         self.locators.article_title, article
                     )
-                    description_element = self.browser.find_element(
-                        self.locators.article_description, article
-                    )
+                    try:
+                        description_element = self.browser.find_element(
+                            self.locators.article_description, article
+                        )
+                        description = self.browser.get_text(description_element)
+                    except ElementNotFound:
+                        description = ""  # Default value if description is not found
 
                     title = self.browser.get_text(title_element)
-                    description = self.browser.get_text(description_element)
 
                     image_url = self.browser.find_element(
                         self.locators.article_image, article
@@ -152,15 +160,12 @@ class RPANewsScraper:
                             "image_url": image_url,
                         }
                     )
-                if index == len(search_results) - 1 and is_within_date_range:
-                    self.browser.click_button(self.locators.next_page)
-                    self._wait_loading_animation()
-                    self._parse_articles()
+                self._click_next_page(search_results, index, is_within_date_range)
         except Exception:
             self._finish_process("Parsing articles failed: ", traceback.format_exc())
 
     def _finish_process(self, message: str, traceback: str) -> None:
-        logger.error(f"{message}\n\n{traceback}")
+        log.critical(f"{message}\n\n{traceback}")
         self.close()
         raise
 
@@ -212,7 +217,7 @@ class RPANewsScraper:
         return start_period <= check_period <= end_period
 
     def close(self) -> None:
-        logger.info("Closing browser")
+        log.info("Closing browser")
         self.browser.close_all_browsers()
 
     def extract_data(self) -> None:
@@ -221,3 +226,35 @@ class RPANewsScraper:
         self._select_topic()
         self._parse_articles()
         self.close()
+
+    def _handle_shadow_root(self):
+        try:
+            if shadow_host_element := self.browser.find_element(
+                self.locators.shadow_host
+            ):
+                # Get the ID of the shadow host element
+                shadow_host_element_id = shadow_host_element.get_attribute("id")
+                # Use JavaScript to remove the shadow host element by ID
+                self.browser.execute_javascript(
+                    f"document.getElementById('{shadow_host_element_id}').remove();"
+                )
+                log.info("Removed shadow host element")
+        except NoSuchElementException:
+            log.info("No shadow host element found")
+    
+
+    def _click_next_page(self, search_results, index, is_within_date_range):
+        if index == len(search_results) - 1 and is_within_date_range:
+            log.info("Checking the next page")
+            for attempt in range(3):  # Retry up to 3 times
+                try:
+                    self._handle_shadow_root()
+                    self.browser.click_element(self.locators.next_page)
+                    self._wait_loading_animation()
+                    self._parse_articles()
+                    break  # Break the loop if click is successful
+                except (ElementClickInterceptedException, StaleElementReferenceException) as e:
+                    log.warn(f"Attempt {attempt + 1}: Failed to click next page - {e}")
+                    self._wait_loading_animation()  # Optionally wait before retrying
+            else:
+                log.critical("Failed to click next page after multiple attempts")

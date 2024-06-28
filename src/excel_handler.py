@@ -1,7 +1,6 @@
 from RPA.Excel.Files import Files
-from loguru import logger
 import re
-
+from robocorp import log
 
 class ExcelHandler:
     def __init__(self, file_name):
@@ -19,9 +18,9 @@ class ExcelHandler:
                     "Contains Money",
                 ]
             ],
-            header=True,
+            header=False,
         )
-        logger.info(f"Excel file {self.file_name} created")
+        log.info(f"Excel file {self.file_name} created")
 
     def add_article(self, article, search_phrase):
         phrase_count = self.count_search_phrases(
@@ -40,12 +39,12 @@ class ExcelHandler:
                 ]
             ]
         )
-        logger.info(f"Article added to Excel: {article['title']}")
+        log.info(f"Article added to Excel: {article['title']}")
 
     def save(self):
         self.excel.save_workbook(self.file_name)
         self.excel.close_workbook()
-        logger.info(f"Excel file {self.file_name} saved")
+        log.info(f"Excel file {self.file_name} saved")
 
     @staticmethod
     def count_search_phrases(title, description, search_phrase):
@@ -56,9 +55,9 @@ class ExcelHandler:
     @staticmethod
     def contains_money(title, description):
         money_patterns = [
-            r"\$\d+(\.\d+)?",  # $100 or $100.50
-            r"\d+ dollars",  # 100 dollars
-            r"\d+ USD",  # 100 USD
+            r"\$\d{1,3}(,\d{3})*(\.\d+)?",  # $100 or $100.50 or $1,000 or $1,000.50
+            r"\d{1,3}(,\d{3})* dollars",  # 100 dollars or 1,000 dollars
+            r"\d{1,3}(,\d{3})* USD",  # 100 USD or 1,000 USD
             r"\d+k USD",  # 100k USD
             r"\d+m USD",  # 100m USD
             r"\d+(\.\d+)?k dollars",  # 100k dollars or 100.5k dollars
